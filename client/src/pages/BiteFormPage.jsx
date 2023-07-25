@@ -1,6 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { addBiteRequest, getBiteRequest, updateBiteRequest } from "../api/bite";
+import {
+  addBiteRequest,
+  deleteBiteRequest,
+  getBiteRequest,
+  updateBiteRequest,
+} from "../api/bite";
 import { useNavigate, useParams } from "react-router-dom";
 
 const BiteFormPage = () => {
@@ -12,10 +17,19 @@ const BiteFormPage = () => {
   } = useForm();
   const navigate = useNavigate();
   const params = useParams();
+  const queryClient = useQueryClient();
 
   const createBiteMutation = useMutation({
     mutationFn: addBiteRequest,
     onSuccess: () => {
+      navigate("/bites");
+    },
+  });
+
+  const deleteBiteMutation = useMutation({
+    mutationFn: deleteBiteRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["bites"]);
       navigate("/bites");
     },
   });
@@ -56,9 +70,21 @@ const BiteFormPage = () => {
 
   return (
     <div>
+      {params?.id && (
+        <div className="flex justify-end">
+          <button
+            className="rounded bg-red-500 p-3 text-center text-white hover:bg-red-600 focus:outline-none"
+            onClick={() => deleteBiteMutation.mutate(params.id)}
+          >
+            Delete
+          </button>
+        </div>
+      )}
       <form onSubmit={onSubmit}>
         <div>
-          <label htmlFor="title">Title</label>
+          <label htmlFor="title" className="font-semibold">
+            Title
+          </label>
           <input
             className="border-grey-light mb-4 block w-full rounded border p-3"
             name="title"
@@ -68,7 +94,9 @@ const BiteFormPage = () => {
           {errors.title && <p className="text-red-500">Title is required</p>}
         </div>
         <div>
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description" className="font-semibold">
+            Description
+          </label>
           <input
             className="border-grey-light mb-4 block w-full rounded border p-3"
             name="description"
@@ -77,7 +105,9 @@ const BiteFormPage = () => {
           />
         </div>
         <div>
-          <label htmlFor="language">Language</label>
+          <label htmlFor="language" className="font-semibold">
+            Language
+          </label>
           <select
             className="border-grey-light mb-4 block w-full rounded border bg-white p-3"
             name="language"
@@ -102,9 +132,11 @@ const BiteFormPage = () => {
           )}
         </div>
         <div>
-          <label htmlFor="isPublic">Public</label>
+          <label htmlFor="isPublic" className="font-semibold">
+            Public
+          </label>
           <input
-            className="block"
+            className="mx-2"
             type="checkbox"
             name="isPublic"
             {...register("isPublic")}
