@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import Code from "./Code";
 
 const Bite = ({ bite }) => {
@@ -22,6 +23,18 @@ const Bite = ({ bite }) => {
       </footer>
     </div>
   );
+};
+
+Bite.propTypes = {
+  bite: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    language: PropTypes.string.isRequired,
+    code: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    createdAt: PropTypes.string,
+    isPublic: PropTypes.bool,
+    _id: PropTypes.string,
+  }).isRequired,
 };
 
 export default Bite;

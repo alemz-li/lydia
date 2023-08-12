@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import "prismjs/themes/prism-tomorrow.css";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-python";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-lua";
+
 import { useEffect } from "react";
 
 const Code = ({ language, code }) => {

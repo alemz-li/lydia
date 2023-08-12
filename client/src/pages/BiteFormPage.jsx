@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import {
@@ -7,8 +8,14 @@ import {
   updateBiteRequest,
 } from "../api/bite";
 import { useNavigate, useParams } from "react-router-dom";
+import CodeEditor from "@uiw/react-textarea-code-editor";
+import { LANGUAGUES } from "../data/languages";
 
 const BiteFormPage = () => {
+  const [code, setCode] = useState("");
+  const [language, setLanguage] = useState("javascript");
+  const [error, setError] = useState(null);
+
   const {
     register,
     setValue,
@@ -42,12 +49,18 @@ const BiteFormPage = () => {
   });
 
   const onSubmit = handleSubmit(async (values) => {
-    console.log(values);
+    setError(null);
+
     try {
+      if (!code) {
+        setError("Code snippet is required");
+        return;
+      }
+
       if (params.id) {
-        updateBiteMutation.mutate({ ...values, _id: params.id });
+        updateBiteMutation.mutate({ ...values, code, _id: params.id });
       } else {
-        createBiteMutation.mutate(values);
+        createBiteMutation.mutate({ ...values, code });
       }
     } catch (error) {
       console.log(error);
@@ -63,8 +76,9 @@ const BiteFormPage = () => {
       setValue("title", bite.title);
       setValue("description", bite.description);
       setValue("language", bite.language);
-      setValue("code", bite.code);
       setValue("isPublic", bite.isPublic);
+      setCode(bite.code);
+      setLanguage(bite.language);
     },
   });
 
@@ -112,24 +126,31 @@ const BiteFormPage = () => {
             className="border-grey-light mb-4 block w-full rounded border bg-white p-3"
             name="language"
             {...register("language", { required: true })}
+            onChange={(ev) => setLanguage(ev.target.value.toLowerCase())}
           >
-            <option value="Javascript">Javascript</option>
-            <option value="Python">Python</option>
-            <option value="Lua">Lua</option>
+            {Object.keys(LANGUAGUES).map((key) => (
+              <option value={key} key={key}>
+                {LANGUAGUES[key]}
+              </option>
+            ))}
           </select>
           {errors.language && <p className="text-red-500">Title is required</p>}
         </div>
         <div>
-          <textarea
-            className="border-grey-light mb-4 block w-full rounded border bg-white p-3"
-            rows="10"
-            autoComplete="off"
-            name="code"
-            {...register("code", { required: true })}
+          <CodeEditor
+            value={code}
+            language={language}
+            placeholder="Insert your code here..."
+            className="border-grey-light my-6 block w-full rounded border p-4"
+            padding={15}
+            style={{
+              fontSize: 14,
+              fontFamily:
+                "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
+            }}
+            onChange={(ev) => setCode(ev.target.value)}
           />
-          {errors.code && (
-            <p className="text-red-500">Code snippet cannot be empty</p>
-          )}
+          {error && <p className="text-red-500">{error}</p>}
         </div>
         <div>
           <label htmlFor="isPublic" className="font-semibold">
