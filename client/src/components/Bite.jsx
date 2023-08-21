@@ -7,7 +7,7 @@ const Bite = ({ bite }) => {
     <div className="m-4 rounded-md p-2 drop-shadow-md">
       <header>
         <h2 className="my-2 text-3xl font-bold">
-          <Link to={`/bites/update/${bite._id}`}>{bite?.title}</Link>
+          <Link to={`/bites/view/${bite._id}`}>{bite?.title}</Link>
         </h2>
         <span className="text-zinc-400">{bite?.language}</span>
       </header>

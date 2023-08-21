@@ -28,7 +28,7 @@ const App = () => {
               <Route element={<ProtectedRoutes />}>
                 <Route path="/bites" element={<BitesPage />} />
                 <Route path="/bites/add" element={<BiteFormPage />} />
-                <Route path="/bites/update/:id" element={<BiteFormPage />} />
+                <Route path="/bites/view/:id" element={<BiteFormPage />} />
               </Route>
             </Routes>
           </main>
