@@ -11,7 +11,15 @@ const Nav = () => {
       <ul className="flex gap-x-4">
         {isAuthenticated ? (
           <>
-            <li className="text-slate-800">Welcome {user.username}</li>
+            <li className="text-slate-800">
+              Welcome{" "}
+              <Link
+                className="text-blue-600 hover:text-blue-700"
+                to={`/u/${user.username}`}
+              >
+                {user.username}
+              </Link>
+            </li>
             <li>
               <Link
                 to="/bites/add"

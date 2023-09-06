@@ -5,6 +5,13 @@ export const getBitesRequest = async (page = 1, limit = 10) => {
   return data;
 };
 
+export const getPublicBitesRequest = async (username, page = 1, limit = 10) => {
+  const { data } = await axios.get(
+    `/bites/u/${username}?page=${page}&limit=${limit}`
+  );
+  return data;
+};
+
 export const getBiteRequest = async (id) => {
   const { data } = await axios.get(`/bites/${id}`);
   return data;
