@@ -142,9 +142,9 @@ const BiteFormPage = () => {
             language={language}
             placeholder="Insert your code here..."
             className="border-grey-light my-6 block w-full rounded border p-4"
-            padding={15}
             style={{
               fontSize: 14,
+              backgroundColor: "transparent",
               fontFamily:
                 "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
             }}
