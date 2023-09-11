@@ -26,7 +26,7 @@ const biteSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: true, versionKey: false },
 );
 
 export default mongoose.model("Bite", biteSchema);

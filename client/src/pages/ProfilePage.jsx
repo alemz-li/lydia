@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getBitesRequest } from "../api/bite";
+import { getPublicBitesRequest } from "../api/bite";
 import Pagination from "../components/Pagination";
 import Bite from "../components/Bite";
+import { useParams } from "react-router-dom";
 
-const BitesPage = () => {
+const ProfilePage = () => {
+  const params = useParams();
+
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, isError, error, data } = useQuery({
-    queryKey: ["bites", currentPage],
-    queryFn: () => getBitesRequest(currentPage, 10),
+    queryKey: ["public_bites", currentPage],
+    queryFn: () => getPublicBitesRequest(params?.username, currentPage, 10),
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -16,6 +19,7 @@ const BitesPage = () => {
 
   return (
     <section>
+      <h1>Public Bites</h1>
       {data.bites.length === 0 ? (
         <div>No bites...</div>
       ) : (
@@ -35,4 +39,4 @@ const BitesPage = () => {
   );
 };
 
-export default BitesPage;
+export default ProfilePage;

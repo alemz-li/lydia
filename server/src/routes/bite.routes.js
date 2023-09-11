@@ -7,8 +7,11 @@ import * as biteController from "../controllers/bite.controller.js";
 
 const router = Router();
 
-router.use(authRequired);
+// Public
+router.get("/u/:username", biteController.getUserPublicBites);
 
+router.use(authRequired);
+// Private
 router.get("/", biteController.getBites);
 router.get("/:id", biteController.getBite);
 router.post("/", validateSchema(createBiteSchema), biteController.createBite);

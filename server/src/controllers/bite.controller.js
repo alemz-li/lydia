@@ -39,6 +39,38 @@ export const getBites = async (req, res) => {
   }
 };
 
+export const getUserPublicBites = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const bites = await biteService.getPublicBites(
+      startIndex,
+      limit,
+      req.params.username,
+    );
+
+    const totalDocuments = await biteService.getTotalPublicBites(bites[0].user);
+    const totalPages = Math.ceil(totalDocuments / limit);
+
+    res.status(200).json({
+      bites,
+      info: {
+        total: totalDocuments,
+        pages: totalPages,
+        hasNextPage: endIndex < totalDocuments,
+        hasPreviousPage: startIndex > 0,
+        limit,
+      },
+    });
+  } catch (error) {
+    const code = error.code || 500;
+    res.status(code).json({ message: error.message });
+  }
+};
+
 export const getBite = async (req, res) => {
   try {
     const bite = await biteService.getBiteById(req.params.id, req.userId);
