@@ -96,7 +96,7 @@ const BiteFormPage = () => {
       )}
       <form onSubmit={onSubmit}>
         <div>
-          <label htmlFor="title" className="font-semibold">
+          <label htmlFor="title" className="font-semibold dark:text-zinc-100">
             Title
           </label>
           <input
@@ -108,7 +108,10 @@ const BiteFormPage = () => {
           {errors.title && <p className="text-red-500">Title is required</p>}
         </div>
         <div>
-          <label htmlFor="description" className="font-semibold">
+          <label
+            htmlFor="description"
+            className="font-semibold dark:text-zinc-100"
+          >
             Description
           </label>
           <input
@@ -119,7 +122,10 @@ const BiteFormPage = () => {
           />
         </div>
         <div>
-          <label htmlFor="language" className="font-semibold">
+          <label
+            htmlFor="language"
+            className="font-semibold dark:text-zinc-100"
+          >
             Language
           </label>
           <select
@@ -141,10 +147,10 @@ const BiteFormPage = () => {
             value={code}
             language={language}
             placeholder="Insert your code here..."
-            className="border-grey-light my-6 block w-full rounded border p-4"
+            className="my-6 block w-full rounded py-4"
             style={{
               fontSize: 14,
-              backgroundColor: "transparent",
+              backgroundColor: "#292929",
               fontFamily:
                 "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
             }}
@@ -153,7 +159,10 @@ const BiteFormPage = () => {
           {error && <p className="text-red-500">{error}</p>}
         </div>
         <div>
-          <label htmlFor="isPublic" className="font-semibold">
+          <label
+            htmlFor="isPublic"
+            className="font-semibold dark:text-zinc-100"
+          >
             Public
           </label>
           <input

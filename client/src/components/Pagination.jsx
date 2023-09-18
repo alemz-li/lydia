@@ -21,7 +21,6 @@ const Pagination = (props) => {
 
   const onNext = () => {
     onPageChange(currentPage + 1);
-    console.log(currentPage);
   };
 
   const onPrevious = () => {
@@ -30,14 +29,14 @@ const Pagination = (props) => {
 
   let lastPage = paginationRange[paginationRange.length - 1];
   return (
-    <ul className="flex h-8 w-full list-none justify-center">
+    <ul className="flex h-8 w-full list-none justify-center dark:text-zinc-100">
       <li
         className={`mx-auto my-[4px] flex items-center py-3 ${
           currentPage === 1 ? "pointer-events-none text-zinc-400 " : ""
         }`}
         onClick={onPrevious}
       >
-        <div className="mx-auto my-[4px] flex items-center py-3">prev</div>
+        <div className="mx-auto my-[4px] flex items-center py-3">&lt;</div>
       </li>
       {paginationRange.map((pageNumber, idx) => {
         if (pageNumber === DOTS) {
@@ -51,7 +50,9 @@ const Pagination = (props) => {
         return (
           <li
             className={`mx-auto my-[4px] flex cursor-pointer items-center p-3 ${
-              pageNumber === currentPage ? "rounded-2xl bg-zinc-200 " : ""
+              pageNumber === currentPage
+                ? "rounded-2xl bg-zinc-200 dark:bg-gray-600"
+                : ""
             }`}
             key={idx}
             onClick={() => onPageChange(pageNumber)}
@@ -66,7 +67,7 @@ const Pagination = (props) => {
         }`}
         onClick={onNext}
       >
-        <div>next</div>
+        <div>&gt;</div>
       </li>
     </ul>
   );

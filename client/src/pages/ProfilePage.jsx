@@ -19,9 +19,11 @@ const ProfilePage = () => {
 
   return (
     <section>
-      <h1>Public Bites</h1>
+      <h1 className="pt-3 text-4xl font-semibold dark:text-zinc-100">
+        {params?.username} Public Bites
+      </h1>
       {data.bites.length === 0 ? (
-        <div>No bites...</div>
+        <div className="dark:text-zinc-100">No bites...</div>
       ) : (
         <>
           {data.bites.map((bite) => (

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Code from "./Code";
-import { Button } from "./ui/Button";
 import { useState, useEffect } from "react";
 
 const Bite = ({ bite }) => {
@@ -16,28 +15,55 @@ const Bite = ({ bite }) => {
     if (copied) {
       const timer = setTimeout(() => {
         setCopied(false);
-      }, 2000);
+      }, 1250);
       return () => clearTimeout(timer);
     }
   }, [copied]);
 
   return (
-    <div className="m-4 rounded-md p-2 drop-shadow-md">
+    <div className="my-2 mb-4 rounded-md p-2 drop-shadow-md">
       <header>
-        <div className="flex items-center justify-between">
-          <h2 className="my-4 text-3xl font-bold">
-            <Link to={`/bites/view/${bite._id}`}>{bite?.title}</Link>
-          </h2>
-          <Button onClick={() => copySnippet(bite?.code)}>
-            {copied ? "Copied!" : "Copy"}
-          </Button>
-        </div>
+        <h2 className="my-4 text-3xl font-bold dark:text-zinc-100">
+          <Link to={`/bites/view/${bite._id}`}>{bite?.title}</Link>
+        </h2>
         <span className="text-zinc-400">{bite?.language}</span>
       </header>
       {bite.description && (
-        <p className="my-3 text-zinc-800">{bite.description}</p>
+        <p className="my-3 text-zinc-800 dark:text-zinc-200 max-sm:truncate">
+          {bite.description}
+        </p>
       )}
-      <div>
+      <div className="relative w-full">
+        <button
+          onClick={() => copySnippet(bite?.code)}
+          className="absolute right-3 top-3"
+        >
+          {copied ? (
+            <svg
+              className="h-6 w-6 fill-white"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M21.582 5.543a1 1 0 0 1 0 1.414l-11.33 11.33a1 1 0 0 1-1.407.006l-6.546-6.429a1 1 0 1 1 1.402-1.427l5.838 5.735 10.629-10.63a1 1 0 0 1 1.414 0Z"
+              />
+            </svg>
+          ) : (
+            <svg
+              className="h-8 w-8 fill-white"
+              viewBox="-2.4 -2.4 28.8 28.8"
+              xmlns="http://www.w3.org/2000/svg"
+              transform="scale(-1 1)"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M19.5 16.5v-12l-.75-.75H9l-.75.75v3h-3l-.75.75v12l.75.75H15l.75-.75v-3h3l.75-.75Zm-3.75-.75v-7.5L15 7.5H9.75V5.25H18v10.5h-2.25ZM6 9h8.25v10.5H6V9Z"
+              />
+            </svg>
+          )}
+        </button>
         <Code language={bite.language} code={bite?.code} />
       </div>
       <footer className="my-2 flex items-center justify-between text-sm text-zinc-400">
