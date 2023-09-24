@@ -1,13 +1,25 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Nav = ({ handleChangeTheme }) => {
   const { isAuthenticated, logout, user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleMenu = () => {
     setIsOpen((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    try {
+      logout();
+
+      queryClient.removeQueries();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -69,7 +81,7 @@ const Nav = ({ handleChangeTheme }) => {
               </Link>
             </li>
             <li className="mb-4 hover:text-zinc-700 dark:hover:text-zinc-400 sm:mb-0 sm:ml-4">
-              <Link to="/" onClick={() => logout()}>
+              <Link to="/" onClick={handleLogout}>
                 Logout
               </Link>
             </li>
