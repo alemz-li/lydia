@@ -5,9 +5,9 @@ import { TOKEN_SECRET } from "../config.js";
 export const register = async (data) => {
   const { username, email, password } = data;
 
-  const isRegistered = await User.findOne({ email });
+  const isRegistered = await User.findOne({ $or: [{ username }, { email }] });
 
-  if (isRegistered) throw { code: 400, message: "Email is taken" };
+  if (isRegistered) throw { code: 400, message: "User already registered" };
 
   const passwordHash = await bcrypt.hash(password, 10);
   const user = new User({
