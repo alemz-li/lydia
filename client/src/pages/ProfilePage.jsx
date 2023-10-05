@@ -4,6 +4,7 @@ import { getPublicBitesRequest } from "../api/bite";
 import Pagination from "../components/Pagination";
 import Bite from "../components/Bite";
 import { useParams } from "react-router-dom";
+import Loader from "../components/ui/Loader";
 
 const ProfilePage = () => {
   const params = useParams();
@@ -14,14 +15,21 @@ const ProfilePage = () => {
     queryFn: () => getPublicBitesRequest(params?.username, currentPage, 10),
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  else if (isError) return <div>Error {error.message}</div>;
+  if (isLoading) return <Loader />;
+  else if (isError)
+    return (
+      <div className="mt-24 flex flex-col items-center justify-center rounded-md border p-8 shadow-md dark:border-none dark:bg-gray-800 dark:text-zinc-100">
+        {error.message}
+      </div>
+    );
 
   return (
     <section>
-      <h1>Public Bites</h1>
+      <h1 className="pt-3 text-4xl font-semibold dark:text-zinc-100">
+        {params?.username} Public Bites
+      </h1>
       {data.bites.length === 0 ? (
-        <div>No bites...</div>
+        <div className="dark:text-zinc-100">No bites...</div>
       ) : (
         <>
           {data.bites.map((bite) => (

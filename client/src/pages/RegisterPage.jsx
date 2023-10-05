@@ -13,7 +13,13 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (values) => {
-    signup(values);
+    try {
+      signup(values);
+
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   useEffect(() => {
@@ -72,7 +78,7 @@ const RegisterPage = () => {
           </button>
         </form>
 
-        <div className="mt-6 text-zinc-600">
+        <div className="mt-6 text-zinc-600 dark:text-zinc-100">
           Already have an account?
           <Link to="/login" className="mx-2 text-blue-500">
             Log in

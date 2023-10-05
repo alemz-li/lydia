@@ -62,7 +62,7 @@ const LoginPage = () => {
           </button>
         </form>
 
-        <div className="mt-6 text-zinc-600">
+        <div className="mt-6 text-zinc-600 dark:text-zinc-100">
           Don&apos;t have an account?
           <Link to="/register" className="mx-2 text-blue-500">
             Register
