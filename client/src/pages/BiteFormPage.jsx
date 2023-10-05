@@ -174,7 +174,7 @@ const BiteFormPage = () => {
             Public
           </label>
           <input
-            className="mx-2"
+            className="mx-2 mb-2"
             type="checkbox"
             name="isPublic"
             {...register("isPublic")}
