@@ -13,7 +13,13 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (values) => {
-    signup(values);
+    try {
+      signup(values);
+
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   useEffect(() => {
