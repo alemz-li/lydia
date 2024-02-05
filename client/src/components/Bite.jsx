@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Code from "./Code";
 import { useState, useEffect } from "react";
@@ -23,17 +22,14 @@ const Bite = ({ bite }) => {
   return (
     <div className="my-2 mb-4 rounded-md p-2 drop-shadow-md">
       <header>
-        <h2 className="my-4 text-3xl font-bold dark:text-zinc-100">
-          <Link to={`/bites/view/${bite._id}`}>{bite?.title}</Link>
+        <h2 className="my-4 inline-block text-3xl font-bold dark:text-zinc-100">
+          {bite?.title}
         </h2>
-        <span className="text-zinc-400">{bite?.language}</span>
+        <span className="mx-4 inline text-sm text-zinc-400">
+          {bite?.language}
+        </span>
       </header>
-      {bite.description && (
-        <p className="my-3 text-zinc-800 dark:text-zinc-200 max-sm:truncate">
-          {bite.description}
-        </p>
-      )}
-      <div className="relative w-full">
+      <div className="relative mb-4 w-full">
         <button
           onClick={() => copySnippet(bite?.code)}
           className="absolute right-3 top-3"
@@ -66,8 +62,13 @@ const Bite = ({ bite }) => {
         </button>
         <Code language={bite.language} code={bite?.code} />
       </div>
-      <footer className="my-2 flex items-center justify-between text-sm text-zinc-400">
-        <div>{new Date(bite.createdAt).toUTCString()}</div>
+      {bite.description && (
+        <p className="my-6 tracking-tight text-zinc-800 dark:text-zinc-200 max-sm:truncate">
+          {bite.description}
+        </p>
+      )}
+      <footer className="my-4 flex items-center justify-between text-sm text-zinc-400">
+        <div>{new Date(bite.createdAt).toLocaleString()}</div>
         {bite.isPublic && <div>Public</div>}
       </footer>
     </div>

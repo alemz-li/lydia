@@ -2,16 +2,17 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import useTheme from "../hooks/useTheme";
 
-const Nav = ({ handleChangeTheme }) => {
+const Nav = () => {
   const { isAuthenticated, logout, user } = useAuth();
+  const { handleChangeTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const handleMenu = () => {
     setIsOpen((prev) => !prev);
   };
-
   const handleLogout = () => {
     try {
       logout();
@@ -23,11 +24,11 @@ const Nav = ({ handleChangeTheme }) => {
   };
 
   return (
-    <header className="mb-2 bg-slate-200 py-4 shadow-sm dark:bg-gray-950 dark:text-zinc-100 sm:flex sm:justify-between">
+    <header className="mb-2 pt-4 shadow-sm dark:text-zinc-100 sm:flex sm:justify-between">
       <div className="flex items-baseline justify-between px-6">
         <div>
-          <h1 className="mb-4 text-4xl font-bold">
-            <Link to={isAuthenticated ? "/bites" : "/"}>Lydia</Link>
+          <h1 className="p-4 text-4xl font-bold">
+            <Link to={isAuthenticated ? "/dashboard" : "/"}>Lydia</Link>
           </h1>
         </div>
         <div className="sm:hidden">
@@ -66,18 +67,10 @@ const Nav = ({ handleChangeTheme }) => {
             <li className="mb-4 sm:mb-0">
               Welcome{" "}
               <Link
-                className="text-blue-600 hover:text-blue-700"
+                className="text-gray-600 hover:text-gray-700"
                 to={`/u/${user.username}`}
               >
                 {user.username}
-              </Link>
-            </li>
-            <li className="mb-4 sm:mb-0 sm:ml-4">
-              <Link
-                to="/bites/add"
-                className="rounded bg-blue-500 p-2 text-center text-white hover:bg-blue-600 focus:outline-none"
-              >
-                Add Bite
               </Link>
             </li>
             <li className="mb-4 hover:text-zinc-700 dark:hover:text-zinc-400 sm:mb-0 sm:ml-4">

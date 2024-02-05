@@ -52,7 +52,6 @@ export const getTotalPublicBites = async (userId) => {
 };
 
 export const updateBite = async (id, data) => {
-  console.log({ id, data });
   const bite = await Bite.findByIdAndUpdate(id, data);
   if (!bite) throw { code: 404, message: ["Bite not found"] };
 

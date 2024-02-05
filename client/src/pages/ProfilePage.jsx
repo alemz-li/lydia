@@ -24,7 +24,7 @@ const ProfilePage = () => {
     );
 
   return (
-    <section>
+    <section className="container mx-auto">
       <h1 className="pt-3 text-4xl font-semibold dark:text-zinc-100">
         {params?.username} Public Bites
       </h1>

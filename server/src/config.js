@@ -1,6 +1,6 @@
 const allowedOrigins = ["http://localhost:5173"];
-export const PORT = 5000;
-export const TOKEN_SECRET = "aSomeRand0mSecret00";
+export const PORT = process.env.PORT;
+export const TOKEN_SECRET = process.env.JWT_SECRET;
 export const CORS_OPTIONS = {
   origin: (origin, callback) => {
     // remove second condition to not allow applications like POSTMAN to make requests

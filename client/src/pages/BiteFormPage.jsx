@@ -1,13 +1,8 @@
-import { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import {
-  addBiteRequest,
-  deleteBiteRequest,
-  getBiteRequest,
-  updateBiteRequest,
-} from "../api/bite";
-import { useNavigate, useParams } from "react-router-dom";
+import { addBiteRequest } from "../api/bite";
+import { useNavigate } from "react-router-dom";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import { LANGUAGUES } from "../data/languages";
 
@@ -18,34 +13,15 @@ const BiteFormPage = () => {
 
   const {
     register,
-    setValue,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  const params = useParams();
-  const queryClient = useQueryClient();
 
   const createBiteMutation = useMutation({
     mutationFn: addBiteRequest,
     onSuccess: () => {
-      navigate("/bites");
-    },
-  });
-
-  const deleteBiteMutation = useMutation({
-    mutationFn: deleteBiteRequest,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["bites"]);
-      navigate("/bites");
-    },
-  });
-
-  const updateBiteMutation = useMutation({
-    mutationFn: updateBiteRequest,
-    onSuccess: () => {
-      navigate("/bites");
+      navigate("/dashboard");
     },
   });
 
@@ -58,97 +34,26 @@ const BiteFormPage = () => {
         return;
       }
 
-      if (params.id) {
-        updateBiteMutation.mutate({ ...values, code, _id: params.id });
-      } else {
-        createBiteMutation.mutate({ ...values, code });
-      }
+      createBiteMutation.mutate({ ...values, code });
     } catch (error) {
       console.log(error);
     }
   });
 
-  useEffect(() => {
-    if (!params.id) {
-      setCode("");
-      reset();
-    }
-  }, [params.id]);
-
-  useQuery({
-    queryKey: params.id ? ["bite", params.id] : null,
-    queryFn: () => getBiteRequest(params.id),
-    keepPreviousData: false,
-    enabled: !!params.id,
-    onSuccess: (bite) => {
-      setValue("title", bite.title);
-      setValue("description", bite.description);
-      setValue("language", bite.language);
-      setValue("isPublic", bite.isPublic);
-      setCode(bite.code);
-      setLanguage(bite.language);
-    },
-  });
-
   return (
-    <div>
-      {params?.id && (
-        <div className="flex justify-end">
-          <button
-            className="rounded bg-red-500 p-3 text-center text-white hover:bg-red-600 focus:outline-none"
-            onClick={() => deleteBiteMutation.mutate(params.id)}
-          >
-            Delete
-          </button>
-        </div>
-      )}
+    <div className="container mx-auto px-8">
       <form onSubmit={onSubmit}>
         <div>
           <label htmlFor="title" className="font-semibold dark:text-zinc-100">
             Title
           </label>
           <input
-            className="border-grey-light mb-4 block w-full rounded border p-3"
+            className="border-grey-light mb-4 block w-full rounded border p-3 dark:border-neutral-900 dark:bg-neutral-800"
             name="title"
             autoComplete="off"
             {...register("title", { required: true })}
           />
           {errors.title && <p className="text-red-500">Title is required</p>}
-        </div>
-        <div>
-          <label
-            htmlFor="description"
-            className="font-semibold dark:text-zinc-100"
-          >
-            Description
-          </label>
-          <input
-            className="border-grey-light mb-4 block w-full rounded border p-3"
-            name="description"
-            autoComplete="off"
-            {...register("description")}
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="language"
-            className="font-semibold dark:text-zinc-100"
-          >
-            Language
-          </label>
-          <select
-            className="border-grey-light mb-4 block w-full rounded border bg-white p-3"
-            name="language"
-            {...register("language", { required: true })}
-            onChange={(ev) => setLanguage(ev.target.value.toLowerCase())}
-          >
-            {Object.keys(LANGUAGUES).map((key) => (
-              <option value={key} key={key}>
-                {LANGUAGUES[key]}
-              </option>
-            ))}
-          </select>
-          {errors.language && <p className="text-red-500">Title is required</p>}
         </div>
         <div>
           <CodeEditor
@@ -165,6 +70,41 @@ const BiteFormPage = () => {
             onChange={(ev) => setCode(ev.target.value)}
           />
           {error && <p className="text-red-500">{error}</p>}
+        </div>
+        <div>
+          <label
+            htmlFor="description"
+            className="font-semibold dark:text-zinc-100"
+          >
+            Description
+          </label>
+          <input
+            className="border-grey-light mb-4 block w-full rounded border p-3 dark:border-neutral-900 dark:bg-neutral-800"
+            name="description"
+            autoComplete="off"
+            {...register("description")}
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="language"
+            className="font-semibold dark:text-zinc-100"
+          >
+            Language
+          </label>
+          <select
+            className="border-grey-light mb-4 block w-full rounded border p-3 dark:border-neutral-900 dark:bg-neutral-800"
+            name="language"
+            {...register("language", { required: true })}
+            onChange={(ev) => setLanguage(ev.target.value.toLowerCase())}
+          >
+            {Object.keys(LANGUAGUES).map((key) => (
+              <option value={key} key={key}>
+                {LANGUAGUES[key]}
+              </option>
+            ))}
+          </select>
+          {errors.language && <p className="text-red-500">Title is required</p>}
         </div>
         <div>
           <label

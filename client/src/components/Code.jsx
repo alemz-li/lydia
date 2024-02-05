@@ -7,16 +7,20 @@ import "prismjs/components/prism-python";
 import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-lua";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const Code = ({ language, code }) => {
+  const ref = useRef(null);
+
   useEffect(() => {
-    Prism.highlightAll();
-  }, []);
+    Prism.highlightElement(ref.current, false);
+  }, [language, code]);
 
   return (
     <pre className="rounded-lg">
-      <code className={`language-${language.toLowerCase()}`}>{code}</code>
+      <code className={`language-${language.toLowerCase()}`} ref={ref}>
+        {code}
+      </code>
     </pre>
   );
 };

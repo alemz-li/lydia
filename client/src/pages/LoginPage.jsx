@@ -17,7 +17,7 @@ const LoginPage = () => {
   });
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/bites");
+    if (isAuthenticated) navigate("/dashboard");
   }, [isAuthenticated]);
 
   return (
